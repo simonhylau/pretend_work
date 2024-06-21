@@ -7,7 +7,7 @@ from datetime import datetime
 mouse_idle_sec = 180 
 mouse_move_duration = 1
 mouse_move_waiting_sec = 20
-working_hour = "09:00-12:00;13:30-6:00" 
+working_hour = "09:00-12:00;13:30-18:00" 
 
 # Get the screen size
 screen_width, screen_height = pyautogui.size()
@@ -43,23 +43,15 @@ def check_mouse_movement():
 
 def move_mouse():
     global move_left
-    if(move_left):
-        
-        # Move mouse to the left position and click
-        pyautogui.moveTo(left_position, target_y,mouse_move_duration)
-        pyautogui.click()
+    target_x = left_position if move_left else right_position
+    
+    # Move mouse to the target position and click
+    pyautogui.moveTo(target_x, target_y, mouse_move_duration)
+    pyautogui.click()
 
-        # Wait for 20 seconds
-        time.sleep(mouse_move_waiting_sec)
-        move_left = False
-    else:
-        # Move mouse to the right position and click
-        pyautogui.moveTo(right_position, target_y,mouse_move_duration)
-        pyautogui.click()
-
-        # Wait for 20 seconds
-        time.sleep(mouse_move_waiting_sec)
-        move_left = True
+    # Wait for 20 seconds
+    time.sleep(mouse_move_waiting_sec)
+    move_left = not move_left
 
 last_move_time = time.time()
 
