@@ -1,9 +1,10 @@
 from pynput.mouse import Listener, Controller
+from pynput.keyboard import Listener as KeyboardListener
 import pyautogui
 import time
 from datetime import datetime
 
-mouse_idle_sec = 20
+mouse_idle_sec = 180 
 mouse_move_duration = 1
 mouse_move_waiting_sec = 20
 working_hour = "09:00-12:00;13:30-6:00" 
@@ -19,6 +20,10 @@ move_left = True
 
 def on_move(x, y):
     global last_move_time
+    last_move_time = time.time()
+def on_key_press(key):
+    global last_move_time
+    # Update the last move time to the current time whenever a key is pressed
     last_move_time = time.time()
 
 def check_mouse_movement():
@@ -60,5 +65,7 @@ last_move_time = time.time()
 
 mouse_listener = Listener(on_move=on_move)
 mouse_listener.start()
+keyboard_listener = KeyboardListener(on_press=on_key_press)
+keyboard_listener.start()
 
 check_mouse_movement()
